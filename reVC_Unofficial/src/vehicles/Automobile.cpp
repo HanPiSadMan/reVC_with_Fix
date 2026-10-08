@@ -5011,6 +5011,10 @@ CAutomobile::PlayCarHorn(void)
 		return;
 
 	if (m_nCarHornDelay) {
+#ifdef FIX_BUGS_MAYBE
+		// FIX::NPC car horn & complain delay getting short because running over 30FPS
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		m_nCarHornDelay--;
 		return;
 	}
@@ -5764,6 +5768,10 @@ void
 CAutomobile::ReduceHornCounter(void)
 {
 	if(m_nCarHornTimer != 0)
+#ifdef FIX_BUGS_MAYBE
+		// FIX:Horn getting short because of running over 30 FPS
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		m_nCarHornTimer--;
 }
 
