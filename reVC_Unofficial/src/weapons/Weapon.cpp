@@ -694,10 +694,20 @@ CWeapon::FireMelee(CEntity *shooter, CVector &fireSource)
 								{
 									posOffset.Normalise();
 									victimPed->bIsStanding = false;
+#ifdef FIX_BUGS_MAYBE
+									//FIX::Chainsaw force become bigger when running over 30fps.
+									const float timeStepDelta = CTimer::GetTimeStepFix();
+#else
+									const float timeStepDelta = 1.f;
+#endif
 									if(m_eWeaponType == WEAPONTYPE_CHAINSAW)
-										victimPed->ApplyMoveForce(posOffset.x*-2.0f, posOffset.y*-2.0f, 2.0f);
+										victimPed->ApplyMoveForce(posOffset.x * -2.0f * timeStepDelta,
+										                          posOffset.y * -2.0f * timeStepDelta,
+										                          2.0f * timeStepDelta);
 									else
-										victimPed->ApplyMoveForce(posOffset.x*-5.0f, posOffset.y*-5.0f, 3.0f);
+										victimPed->ApplyMoveForce(posOffset.x * -5.0f * timeStepDelta,
+										                          posOffset.y * -5.0f * timeStepDelta,
+										                          3.0f * timeStepDelta);
 
 									if ( isHeavy && victimPed->IsPlayer() )
 										victimPed->SetFall(3000, AnimationId(ANIM_STD_HIGHIMPACT_FRONT + localDir), false);
@@ -712,10 +722,18 @@ CWeapon::FireMelee(CEntity *shooter, CVector &fireSource)
 							{
 								posOffset.Normalise();
 								victimPed->bIsStanding = false;
+#ifdef FIX_BUGS_MAYBE
+								// FIX::Same as above
+								const float timeStepDelta = CTimer::GetTimeStepFix();
+#else
+								const float timeStepDelta = 1.f;
+#endif
 								if(m_eWeaponType == WEAPONTYPE_CHAINSAW)
-									victimPed->ApplyMoveForce(posOffset.x*-1.0f, posOffset.y*-1.0f, 1.0f);
+									victimPed->ApplyMoveForce(posOffset.x * -1.0f * timeStepDelta,
+									                          posOffset.y * -1.0f * timeStepDelta, 1.0f * timeStepDelta);
 								else
-									victimPed->ApplyMoveForce(posOffset.x*-5.0f, posOffset.y*-5.0f, 3.0f);
+									victimPed->ApplyMoveForce(posOffset.x * -5.0f * timeStepDelta,
+									                          posOffset.y * -5.0f * timeStepDelta, 3.0f * timeStepDelta);
 							}
 
 							m_eWeaponState = WEAPONSTATE_MELEE_MADECONTACT;
