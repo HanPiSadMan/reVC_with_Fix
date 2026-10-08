@@ -11,7 +11,7 @@ Player to Object's collision force(TODO:Improve this.).\
 Vehicle's turnSpeed(Testing Method).\
 Chainsaw to NPC's push force\
 Missile's flying speed.\
-Several particle's animation.\
+Several particle's animation(Need Improve).\
 Several animations(Rubbish,Screendroplets,WaterSurface,Wheather,etc.)\
 Mouse position locked even game lost focus\
 NPC's automobile&bike horn&complain\
