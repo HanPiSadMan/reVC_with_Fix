@@ -750,7 +750,14 @@ CPhysical::ApplyCollision(CPhysical *B, CColPoint &colpoint, float &impulseA, fl
 			}
 			return true;
 		}
-	}else if(A->bPedPhysics){
+	} else if(A->bPedPhysics) {
+		// Ped to moveable Object(vehicle or something else...)
+#ifdef FIX_BUGS_MAYBE
+		//FIX:collision force of ped walking on foot against movable objects increases when running over 30 fps.(e.g player push vehicle's force getting bigger)
+		//And obviously this is not a good fix,i will try to use GetTimeStepFix instead later
+		if(!CTimer::GetLogicalFramesPassed()) 
+			return true;
+#endif // FIX_BUGS_MAYBE
 		CVector pointposB = colpoint.point - B->GetPosition();
 		speedA = DotProduct(A->m_vecMoveSpeed, colpoint.normal);
 		speedB = DotProduct(B->GetSpeed(pointposB), colpoint.normal);
@@ -790,6 +797,12 @@ CPhysical::ApplyCollision(CPhysical *B, CColPoint &colpoint, float &impulseA, fl
 			return true;
 		}
 	}else if(B->bPedPhysics){
+		// moveable Object to ped(e.g vehicle hit ped)(being hit?)
+		// #ifdef FIX_BUGS_MAYBE
+		//  		//FIX:objects collision force to ped,same as above,not very sure if we fix need this...
+		//		if(!CTimer::GetLogicalFramesPassed())
+		//			return true;
+		// #endif // FIX_BUGS_MAYBE
 		CVector pointposA = colpoint.point - A->GetPosition();
 		speedA = DotProduct(A->GetSpeed(pointposA), colpoint.normal);
 		speedB = DotProduct(B->m_vecMoveSpeed, colpoint.normal);
@@ -830,6 +843,7 @@ CPhysical::ApplyCollision(CPhysical *B, CColPoint &colpoint, float &impulseA, fl
 			return true;
 		}
 	}else{
+		// Object to Object
 		CVector pointposA = colpoint.point - A->GetPosition();
 		CVector pointposB = colpoint.point - B->GetPosition();
 		speedA = DotProduct(A->GetSpeed(pointposA), colpoint.normal);
