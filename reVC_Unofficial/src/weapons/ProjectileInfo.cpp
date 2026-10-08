@@ -68,7 +68,6 @@ CProjectileInfo::AddProjectile(CEntity *entity, eWeaponType weapon, CVector pos,
 	CPed* ped = (CPed*)entity;
 	int time;
 	CVector velocity;
-
 	switch (weapon)
 	{
 		case WEAPONTYPE_ROCKET:
@@ -81,6 +80,7 @@ CProjectileInfo::AddProjectile(CEntity *entity, eWeaponType weapon, CVector pos,
 				CVector vecSpeed = ((CPhysical*)entity)->m_vecMoveSpeed;
 				vy += Max(0.0f, DotProduct(vecSpeed, entity->GetForward())) + Max(0.0f, DotProduct(vecSpeed, entity->GetUp()));
 			} else {
+				//Normally Fire
 				if (ped->IsPlayer()) {
 					matrix.GetForward() = TheCamera.Cams[TheCamera.ActiveCam].Front;
 					matrix.GetUp() = TheCamera.Cams[TheCamera.ActiveCam].Up;
@@ -316,8 +316,12 @@ CProjectileInfo::Update()
 					RemoveProjectile(&gaProjectileInfo[i], ms_apProjectile[i]);
 				}
 				CWorld::pIgnoreEntity = nil;
-				ms_apProjectile[i]->m_vecMoveSpeed *= 1.07f;
-
+#ifdef FIX_BUGS_MAYBE
+				//FIX:Rocket Speed Become faster.
+				ms_apProjectile[i]->m_vecMoveSpeed *= 1 + 0.07 * CTimer::GetTimeStepFix();
+#else
+				ms_apProjectile[i]->m_vecMoveSpeed *= 1.07;
+#endif
 			} else if (gaProjectileInfo[i].m_eWeaponType == WEAPONTYPE_MOLOTOV) {
 				CVector pos = ms_apProjectile[i]->GetPosition();
 				CWorld::pIgnoreEntity = ms_apProjectile[i];
