@@ -1,3 +1,5 @@
+[English](README.md) | [简体中文](README.zh-CN.md)
+***
 ## About This Branch
 This branch incorporates some of the fixes I wrote (mainly targeting some issues that occur when the game runs at high frame rates).
 To enable/disable my fixes in the code, define/undefine **FIX_BUGS_MAYBE** in **core/config.h**.
