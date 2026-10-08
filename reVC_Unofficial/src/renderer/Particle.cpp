@@ -997,7 +997,7 @@ CParticle *CParticle::AddParticle(tParticleType type, CVector const &vecPos, CVe
 		pParticle->m_nRotationStep = nRotationSpeed;
 	else
 		pParticle->m_nRotationStep = psystem->m_nRotationSpeed;
-	
+
 	if ( CGeneral::GetRandomNumber() & 1 )
 		pParticle->m_nRotationStep = -pParticle->m_nRotationStep;
 	
@@ -1285,7 +1285,6 @@ void CParticle::Update()
 					}
 				}
 			}
-			
 			if ( CWeather::Wind > 0.0f )
 			{
 				if ( vecMoveStep.Magnitude() != 0.0f )
@@ -1774,11 +1773,15 @@ void CParticle::Update()
 			
 			if ( particle->m_nRotationStep != 0 )
 #ifdef FIX_BUGS
+#ifdef FIX_BUGS_MAYBE
+				//FIX:Bruh.the smoke from the burning car's engine is rotating weirdly...
+				//Fixed that several partical's rotation become faster when game runing over 30 fps
+				if(CTimer::GetLogicalFramesPassed())
+#endif
 				particle->m_nRotation = CGeneral::LimitAngle(particle->m_nRotation + particle->m_nRotationStep);
 #else
 				particle->m_nRotation += particle->m_nRotationStep;
 #endif
-			
 			if ( particle->m_fCurrentZRadius != 0.0f )
 			{
 				int32 nSinCosIndex = particle->m_nCurrentZRotation % SIN_COS_TABLE_SIZE;
@@ -2067,7 +2070,6 @@ void CParticle::Render()
 				CVector coors;
 				float w;
 				float h;
-
 				if ( CSprite::CalcScreenCoors(particle->m_vecPosition, &coors, &w, &h, true) )
 				{
 					
