@@ -272,6 +272,10 @@ CPlayerInfo::Process(void)
 	}
 
 	// The effect that makes money counter does while earning/losing money
+#ifdef FIX_BUGS_MAYBE
+	// FIX:Money display animation speed too fast
+	if(CTimer::GetLogicalFramesPassed())
+#endif
 	if (m_nVisibleMoney != m_nMoney) {
 		int diff = m_nMoney - m_nVisibleMoney;
 		int diffAbs = Abs(diff);
