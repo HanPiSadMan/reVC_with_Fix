@@ -873,6 +873,12 @@ CParticle *CParticle::AddParticle(tParticleType type, CVector const &vecPos, CVe
 {
 	if ( CTimer::GetIsPaused() )
 		return nil;
+#ifdef FIX_BUGS_MAYBE
+	//FIX:Too many Particles when running over 30
+	if(!CTimer::GetLogicalFramesPassed()) 
+		return nil;
+#endif // FIX_BUGS_MAYBE
+	
 
 	if ( ( type == PARTICLE_ENGINE_SMOKE
 		|| type == PARTICLE_ENGINE_SMOKE2
@@ -1126,7 +1132,6 @@ void CParticle::Update()
 {
 	if ( CTimer::GetIsPaused() )
 		return;
-
 	CRGBA color(0, 0, 0, 0);
 	
 	float fFricDeccel50 = pow(0.50f, CTimer::GetTimeStep());
@@ -1442,7 +1447,10 @@ void CParticle::Update()
 					bRemoveParticle = true;
 					continue;
 				}
-				
+#ifdef FIX_BUGS_MAYBE
+				//FIX::IDK why but this might solve the problem of the particle radius getting larger(seriously?)
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				particle->m_fSize = size;
 			}
 			
@@ -1700,13 +1708,19 @@ void CParticle::Update()
 					}
 				}
 			}
-
-			if ( particle->m_nFadeToBlackTimer != 0 )
+#ifdef FIX_BUGS_MAYBE
+			// FIX:IDK,Maybe need fix...
+			if(CTimer::GetLogicalFramesPassed())
+#endif
+			if (particle->m_nFadeToBlackTimer != 0 )
 			{
 				particle->m_nColorIntensity = Clamp(particle->m_nColorIntensity - particle->m_nFadeToBlackTimer,
 														0, 255);
 			}
-
+#ifdef FIX_BUGS_MAYBE
+			// FIX:particle fade too early
+			if(CTimer::GetLogicalFramesPassed())
+#endif
 			if ( particle->m_nFadeAlphaTimer != 0 )
 			{
 				particle->m_nAlpha = Clamp(particle->m_nAlpha - particle->m_nFadeAlphaTimer,
