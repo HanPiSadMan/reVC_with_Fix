@@ -170,6 +170,11 @@ void CWeather::Update(void)
 		LightningBurst = false;
 	}
 	else{
+#ifdef FIX_BUGS_MAYBE
+		// FIX:LightningFlash actual probability getting higher when fps more than 30 fps.(Too many lightning strikes in short period)
+		// idk if there have better solution to solve this
+		if(CTimer::GetLogicalFramesPassed() || CTimer::GetTimeStepFix() >= 1.f)
+#endif
 		if (LightningBurst) {
 			if ((CGeneral::GetRandomNumber() & 255) >= 32) {
 				// 0.875 probability
@@ -182,10 +187,16 @@ void CWeather::Update(void)
 			}
 			else {
 				// 0.125 probability
+#ifdef FIX_BUGS_MAYBE
+				// FIX:The lightning strikes period too short，caused by framecounter increasing too fast
+				const int MaxDuration = 20 / CTimer::GetTimeStepFix();
+#else
+				const int MaxDuration = 20;
+#endif
 				LightningBurst = false;
-				LightningDuration = Min(CTimer::GetFrameCounter() - LightningStart, 20);
+				LightningDuration = Min(CTimer::GetFrameCounter() - LightningStart, MaxDuration);
 				LightningFlash = false;
-				WhenToPlayLightningSound = CTimer::GetTimeInMilliseconds() + 150 * (20 - LightningDuration);
+				WhenToPlayLightningSound = CTimer::GetTimeInMilliseconds() + 150 * (MaxDuration - LightningDuration);
 			}
 		}
 		else {
