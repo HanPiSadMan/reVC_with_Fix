@@ -918,7 +918,10 @@ CWaterLevel::RenderWater()
 	float windAddUV = CWeather::WindClipped * 0.0005f + 0.0006f;
 	
 	float fAngle = (CTimer::GetTimeInMilliseconds() & 4095) * (TWOPI / 4096.0f);
-	
+#ifdef FIX_BUGS_MAYBE
+	// FIX:WaterLevel Animation Process too fast
+	if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS
 	if ( !CTimer::GetIsPaused() )
 	{
 		TEXTURE_ADDU       += windAddUV;
@@ -1704,7 +1707,10 @@ CWaterLevel::RenderOneWavySector(float fX, float fY, float fZ, RwRGBA const &col
 
 		float move = 1.0f / 16.0f;
 		float randomMove = 1.0f / (16.0f * fRandomMoveDiv);
-
+#ifdef FIX_BUGS_MAYBE
+		// FIX:WaterLevel Flicking move when over 30fps...
+		randomMove *= CTimer::GetTimeStepFix();
+#endif // FIX_BUGS
 		float vertMul = 0.5f;
 
 		float wind = CWeather::WindClipped * 0.4f + 0.2f;
