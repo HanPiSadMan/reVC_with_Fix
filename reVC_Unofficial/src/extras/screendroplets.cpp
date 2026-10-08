@@ -429,6 +429,12 @@ ScreenDroplets::ProcessCameraMovement(void)
 void
 ScreenDroplets::SprayDrops(void)
 {
+#ifdef FIX_BUGS_MAYBE
+	//FIX:The higher the frame rate, the more raindrops appear on the player's camera
+	//and several animation speed issue(e.g walking through a damaged fire hydrant,the screen's effect speed)
+	if(!CTimer::GetLogicalFramesPassed()) 
+		return;
+#endif // FIX_BUGS_MAYBE
 	bool noRain = CCullZones::PlayerNoRain() || CCullZones::CamNoRain();
 	if(!noRain && CWeather::Rain > 0.0f && ms_enabled){
 		// 180 when looking stright up, 0 when looking up or down
