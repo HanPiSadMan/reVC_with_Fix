@@ -443,7 +443,7 @@ CPhysical::ApplyTurnSpeed(void)
 void
 CPhysical::ApplyMoveForce(float jx, float jy, float jz)
 {
-	m_vecMoveSpeed += CVector(jx, jy, jz)*(1.0f/m_fMass);
+	m_vecMoveSpeed += CVector(jx, jy, jz) * (1.0f / m_fMass);
 }
 
 void
@@ -451,7 +451,7 @@ CPhysical::ApplyTurnForce(float jx, float jy, float jz, float px, float py, floa
 {
 	CVector com = Multiply3x3(GetMatrix(), m_vecCentreOfMass);
 	CVector turnimpulse = CrossProduct(CVector(px, py, pz)-com, CVector(jx, jy, jz));
-	m_vecTurnSpeed += turnimpulse*(1.0f/m_fTurnMass);
+	m_vecTurnSpeed += turnimpulse * (1.0f/m_fTurnMass);
 }
 
 void
@@ -570,9 +570,15 @@ CPhysical::ApplyAirResistance(void)
 		m_vecMoveSpeed *= f;
 		m_vecTurnSpeed *= f;
 	}else if(GetStatus() != STATUS_GHOST){ 
-		float f = Pow(1.0f/Abs(1.0f + m_fAirResistance*0.5f*m_vecMoveSpeed.MagnitudeSqr()), CTimer::GetTimeStep());
+		float f = Pow(1.0f / Abs(1.0f + m_fAirResistance*0.5f * m_vecMoveSpeed.MagnitudeSqr()), CTimer::GetTimeStep());
 		m_vecMoveSpeed *= f;
-		m_vecTurnSpeed *= 0.99f;
+#ifdef FIX_BUGS_MAYBE
+		//FIX:Vehicle's TurnSpeed getting lower because of running over 30 fps.
+		//Not accuracy,looking for better solution
+		m_vecTurnSpeed *= Pow(0.998,CTimer::GetTimeStepFix());
+#else // FIX_BUGS_MAYBE
+		m_vecTurnSpeed *= 0.99;
+#endif
 	}
 }
 
