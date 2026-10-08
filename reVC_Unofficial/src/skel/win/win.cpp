@@ -296,6 +296,14 @@ psTimer(void)
 void
 psMouseSetPos(RwV2d *pos)
 {
+#ifdef FIX_BUGS_MAYBE
+	// FIX:Even if the focus is lost in the game, mouse cursor position will be set to the middle when running cutscene.
+	if(PSGLOBAL(window) == NULL)
+		return;
+	if(GetForegroundWindow() != PSGLOBAL(window)) 
+		return;
+#endif // FIX_BUGS_MAYBE
+
 	POINT point;
 
 	point.x = (RwInt32) pos->x;
