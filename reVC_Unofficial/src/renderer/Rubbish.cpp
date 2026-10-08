@@ -231,7 +231,10 @@ void
 CRubbish::Update(void)
 {
 	bool foundGround;
-
+#ifdef FIX_BUGS_MAYBE
+	// FIX:RubbishVisibility changed too fast?(not tested)
+	if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 	// FRAMETIME
 	if(bRubbishInvisible)
 		RubbishVisibility = Max(RubbishVisibility-5, 0);
@@ -253,6 +256,10 @@ CRubbish::Update(void)
 		sheet->m_basePos.x = TheCamera.GetPosition().x + spawnDist*Sin(spawnAngle);
 		sheet->m_basePos.y = TheCamera.GetPosition().y + spawnDist*Cos(spawnAngle);
 		sheet->m_basePos.z = CWorld::FindGroundZFor3DCoord(sheet->m_basePos.x, sheet->m_basePos.y, TheCamera.GetPosition().z, &foundGround) + 0.1f;
+#ifdef FIX_BUGS_MAYBE
+		// FIX:Spawing too fast?(not tested)
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		if(foundGround){
 			// Found ground, so add to statics list
 			sheet->m_angle = (CGeneral::GetRandomNumber()&0xFF)/256.0f * 6.28f;
@@ -312,6 +319,10 @@ CRubbish::Update(void)
 		freq = 1;
 	else
 		freq = 0;
+#ifdef FIX_BUGS_MAYBE
+	// FIX:Rubbish's stir up too frequently(not tested)
+	if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 	if((CTimer::GetFrameCounter() & freq) == 0){
 		// Pick a random sheet and set animation state if static
 		int i = CGeneral::GetRandomNumber() % NUM_RUBBISH_SHEETS;
