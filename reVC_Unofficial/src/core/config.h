@@ -284,6 +284,13 @@ enum Config {
 #endif
 
 #define FIX_BUGS		// fixes bugs that we've came across during reversing. You can undefine this only on release builds.
+
+#define FIX_BUGS_MAYBE         // Enable unofficial fixes bugs.(experimental)
+
+#if defined(FIX_BUGS_MAYBE) && !defined(FIX_BUGS)//Ensure that we have defined FIX_BUGS before using unofficial fixes
+#error You must define FIX_BUGS to enable unofficial fixes!
+#endif
+
 #define MORE_LANGUAGES		// Add more translations to the game
 #define COMPATIBLE_SAVES // this allows changing structs while keeping saves compatible, and keeps saves compatible between platforms
 #define FIX_INCOMPATIBLE_SAVES // try to fix incompatible saves, requires COMPATIBLE_SAVES
