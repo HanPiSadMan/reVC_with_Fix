@@ -517,7 +517,15 @@ CCamera::Process(void)
 		static float DrunkAngle;
 
 		int tableIndex = (int)(DEGTORAD(DrunkAngle)/TWOPI * CParticle::SIN_COS_TABLE_SIZE) & CParticle::SIN_COS_TABLE_SIZE-1;
+#ifdef FIX_BUGS_MAYBE
+		// FIX::When game running over 30 fps,
+		// DrunkAngle processing speed is more fast, resulting in faster screen shaking(Seriously?)
+		// TODO:Fix the blur effect at higher fps
+		DrunkAngle += 5.0f * CTimer::GetTimeStepFix();
+#else
 		DrunkAngle += 5.0f;
+#endif
+
 #ifndef FIX_BUGS
 		// This just messes up interpolation, probably not what they intended
 		// and multiplying the interpolated FOV is also a bit extreme
