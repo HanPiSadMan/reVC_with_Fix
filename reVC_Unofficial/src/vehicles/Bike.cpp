@@ -1117,14 +1117,22 @@ CBike::ProcessControl(void)
 		}
 
 		damagePos = GetMatrix()*damagePos;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_CARFLAME, damagePos, fireDir,
 			nil, 0.9f);
-
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_ENGINE_SMOKE2, damagePos, CVector(0.0f, 0.0f, 0.0f), nil, 0.5f);
 
 		damagePos.x += CGeneral::GetRandomNumberInRange(-0.5625f, 0.5625f),
 		damagePos.y += CGeneral::GetRandomNumberInRange(-0.5625f, 0.5625f),
 		damagePos.z += CGeneral::GetRandomNumberInRange(0.5625f, 2.25f);
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_CARFLAME_SMOKE, damagePos, CVector(0.0f, 0.0f, 0.0f));
 
 		// Blow up car after 5 seconds
@@ -1216,7 +1224,6 @@ CBike::ProcessControl(void)
 			m_vecTurnSpeed.z = 0.0f;
 		}
 	}
-
 	// Balance bike
 	if(bBalancedByRider || bIsBeingPickedUp || bIsStanding){
 		float onSideness = DotProduct(GetRight(), m_vecAvgSurfaceNormal);
@@ -1224,7 +1231,7 @@ CBike::ProcessControl(void)
 		CVector worldCOM = Multiply3x3(GetMatrix(), m_vecCentreOfMass);
 		// Keep bike upright
 		if(bBalancedByRider){
-			ApplyTurnForce(-0.07f*onSideness*m_fTurnMass*GetUp()*CTimer::GetTimeStep(), worldCOM+GetRight());
+			ApplyTurnForce(-0.17f*onSideness*m_fTurnMass*GetUp()*CTimer::GetTimeStep(), worldCOM+GetRight());
 			bIsStanding = false;
 		}else
 			ApplyTurnForce(-0.1f*onSideness*m_fTurnMass*GetUp()*CTimer::GetTimeStep(), worldCOM+GetRight());
@@ -1295,6 +1302,9 @@ CBike::PreRender(void)
 		if(m_aSuspensionSpringRatioPrev[BIKESUSP_R1] < 1.0f)
 			groundPos = (groundPos + m_aWheelColPoints[BIKESUSP_R1].point)/2.0f;
 		groundPos += Sin(m_fLeanLRAngle) * 0.8f*GetColModel()->boundingBox.min.z * GetRight();
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 			groundPos + CVector(0.0f, 0.0f, 0.25f), CVector(0.0f, 0.0f, 0.0f),
 			nil, smokeSize);
@@ -1305,9 +1315,15 @@ CBike::PreRender(void)
 		if(m_aWheelState[BIKEWHEEL_REAR] == WHEEL_STATE_SPINNING &&
 		   (CSurfaceTable::GetAdhesionGroup(m_aWheelColPoints[BIKESUSP_R2].surfaceB) == ADHESIVE_HARD ||
 		    CSurfaceTable::GetAdhesionGroup(m_aWheelColPoints[BIKESUSP_R2].surfaceB) == ADHESIVE_ROAD)){
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_BURNINGRUBBER_SMOKE,
 				groundPos + CVector(0.0f, 0.0f, 0.25f),
 				CVector(0.0f, 0.0f, 0.0f));
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_BURNINGRUBBER_SMOKE,
 				groundPos + CVector(0.0f, 0.0f, 0.25f),
 				CVector(0.0f, 0.0f, 0.05f));
@@ -1541,10 +1557,18 @@ CBike::PreRender(void)
 			CVector normalSpeed = m_aWheelColPoints[susp].normal * DotProduct(m_aWheelColPoints[susp].normal, m_vecMoveSpeed);
 			CVector frictionSpeed = m_vecMoveSpeed - normalSpeed;
 			CVector sparkDir = 0.25f*frictionSpeed;
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[susp].point, sparkDir);
-
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			if(speedSq > 0.04f)
 				CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[susp].point, sparkDir);
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			if(speedSq > 0.16f){
 				CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[susp].point, sparkDir);
 				CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[susp].point, sparkDir);
@@ -1705,9 +1729,15 @@ CBike::PreRender(void)
 			}
 
 			static float fumesLimit = 2.0f;
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			if(CGeneral::GetRandomNumberInRange(1.0f, 3.0f)*(m_fGasPedal+1.1f) > fumesLimit){
 				CParticle::AddParticle(PARTICLE_EXHAUST_FUMES, pos1, dir);
 				if(dblExhaust)
+#ifdef FIX_BUGS_MAYBE
+					if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 					CParticle::AddParticle(PARTICLE_EXHAUST_FUMES, pos2, dir);
 
 				if(GetStatus() == STATUS_PLAYER && (CTimer::GetFrameCounter()&3) == 0 &&
@@ -1722,7 +1752,9 @@ CBike::PreRender(void)
 						if(TheCamera.GetLookDirection() == LOOKING_LEFT ||
 						   TheCamera.GetLookDirection() == LOOKING_RIGHT)
 							pos1 -= 0.2f*GetForward();
-
+#ifdef FIX_BUGS_MAYBE
+						if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_HEATHAZE, pos1, CVector(0.0f, 0.0f, 0.0f));
 					}
 				}
@@ -1746,7 +1778,6 @@ CBike::ProcessEntityCollision(CEntity *ent, CColPoint *colpoints)
 {
 	int i;
 	CColModel *colModel;
-
 	if(GetStatus() != STATUS_SIMPLE)
 		bVehicleColProcessed = true;
 
@@ -2207,12 +2238,21 @@ CBike::AddDamagedVehicleParticles(void)
 		// fire, done in processControl
 	}else if(m_fHealth < 320.0f){
 		direction *= 0.2f;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_ENGINE_SMOKE2, damagePos, direction + 0.02f*m_leanMatrix.GetRight());
 	}else if(m_fHealth < 390.0f){
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		if(((CTimer::GetFrameCounter() + m_randomSeed) & 3) == 0 ||
 		   ((CTimer::GetFrameCounter() + m_randomSeed) & 3) == 2)
 			CParticle::AddParticle(PARTICLE_ENGINE_STEAM, damagePos, direction + 0.05f*m_leanMatrix.GetRight());
 		direction *= 0.3f;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_ENGINE_SMOKE, damagePos, direction + 0.04f*m_leanMatrix.GetRight());
 	}else if(m_fHealth < 460.0f){
 		int rnd = CTimer::GetFrameCounter() + m_randomSeed;
@@ -2224,13 +2264,22 @@ CBike::AddDamagedVehicleParticles(void)
 			return;
 		direction.z += 0.05f;
 		if(TheCamera.GetLookDirection() != LOOKING_FORWARD){
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_ENGINE_STEAM, damagePos, direction + 0.08f*m_leanMatrix.GetRight(), nil, 0.1f, 0, 0, 0, 1000);
 		}else if(((CTimer::GetFrameCounter() + m_randomSeed) & 1) == 0){
 			direction = 0.8f*m_vecMoveSpeed;
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_ENGINE_STEAM, damagePos, direction + 0.07f*m_leanMatrix.GetRight(), nil, 0.1f, 0, 0, 0, 1000);
 		}
 	}else if(((CTimer::GetFrameCounter() + m_randomSeed) & 3) == 0 ||
 	         ((CTimer::GetFrameCounter() + m_randomSeed) & 3) == 2){
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_ENGINE_STEAM, damagePos + 0.06f*m_leanMatrix.GetRight(), direction);
 	}
 }
@@ -2256,6 +2305,9 @@ CBike::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 	case SURFACE_GRASS:
 		dir.x = -0.05f*m_vecMoveSpeed.x;
 		dir.y = -0.05f*m_vecMoveSpeed.y;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 4; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.03f, 0.04f);
 			CParticle::AddParticle(PARTICLE_WHEEL_DIRT, colpoint->point, dir, nil,
@@ -2265,6 +2317,9 @@ CBike::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 	case SURFACE_GRAVEL:
 		dir.x = -0.05f*m_vecMoveSpeed.x;
 		dir.y = -0.05f*m_vecMoveSpeed.y;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 4; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.03f, 0.04f);
 			CParticle::AddParticle(PARTICLE_WHEEL_DIRT, colpoint->point, dir, nil,
@@ -2274,6 +2329,9 @@ CBike::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 	case SURFACE_MUD_DRY:
 		dir.x = -0.05f*m_vecMoveSpeed.x;
 		dir.y = -0.05f*m_vecMoveSpeed.y;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 4; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.03f, 0.04f);
 			CParticle::AddParticle(PARTICLE_WHEEL_DIRT, colpoint->point, dir, nil,
@@ -2286,6 +2344,9 @@ CBike::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 			return 0;
 		dir.x = 0.75f*m_vecMoveSpeed.x;
 		dir.y = 0.75f*m_vecMoveSpeed.y;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 1; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.02f, 0.055f);
 			CParticle::AddParticle(PARTICLE_SAND, colpoint->point, dir, nil,
@@ -2293,6 +2354,9 @@ CBike::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 		}
 		return 0;
 	default:
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		if(CWeather::WetRoads > 0.01f){
 			CParticle::AddParticle(
 				PARTICLE_WATERSPRAY,
