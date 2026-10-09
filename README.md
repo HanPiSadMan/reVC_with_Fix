@@ -14,6 +14,7 @@ Several particle's animation(Need Improve).\
 Several animations(Rubbish,Screendroplets,WaterSurface,Wheather,etc.)\
 Mouse position locked even game lost focus\
 NPC's automobile&bike horn&complain\
-
+***
+These fixes are testing,recommend enable **V-Sync** during playing.
 For detailed fixes,please checkout my commits.
 
