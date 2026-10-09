@@ -958,25 +958,33 @@ void CParticleObject::UpdateClose(void)
 						
 						splashpos = pos + CVector(0.015f*fCos, 0.015f*fSin, 0.0f);
 						splashvel = vel + CVector(0.015f*fCos, 0.015f*fSin, CGeneral::GetRandomNumberInRange(0.004f, 0.008f));
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_SPLASH, splashpos, splashvel, nil,
 							CGeneral::GetRandomNumberInRange(0.001f, 0.005f), this->m_Color, 0, 0, 1, 1000);
 							
 						splashpos = pos + CVector(0.015f*fCos, 0.015f*-fSin, 0.0f);
 						splashvel = vel + CVector(0.015f*fCos, 0.015f*-fSin, CGeneral::GetRandomNumberInRange(0.004f, 0.008f));
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_SPLASH, splashpos, splashvel, nil,
 							CGeneral::GetRandomNumberInRange(0.001f, 0.005f), this->m_Color, 0, 0, 1, 1000);
 							
 						splashpos = pos + CVector(0.015f*-fCos, 0.015f*fSin, 0.0f);
 						splashvel = vel + CVector(0.015f*-fCos, 0.015f*fSin, CGeneral::GetRandomNumberInRange(0.004f, 0.008f));
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_SPLASH, splashpos, splashvel, nil,
 							CGeneral::GetRandomNumberInRange(0.001f, 0.005f), this->m_Color, 0, 0, 1, 1000);
 							
 						splashpos = pos + CVector(0.015f*-fCos, 0.015f*-fSin, 0.0f);
 						splashvel = vel + CVector(0.015f*-fCos, 0.015f*-fSin, CGeneral::GetRandomNumberInRange(0.004f, 0.008f));
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_SPLASH, splashpos, splashvel, nil,
 							CGeneral::GetRandomNumberInRange(0.001f, 0.005f), this->m_Color, 0, 0, 1, 1000);
 					}
