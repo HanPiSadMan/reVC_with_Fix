@@ -873,11 +873,11 @@ CParticle *CParticle::AddParticle(tParticleType type, CVector const &vecPos, CVe
 {
 	if ( CTimer::GetIsPaused() )
 		return nil;
-#ifdef FIX_BUGS_MAYBE
-	//FIX:Too many Particles when running over 30
-	if(!CTimer::GetLogicalFramesPassed()) 
-		return nil;
-#endif // FIX_BUGS_MAYBE
+//#ifdef FIX_BUGS_MAYBE
+//	//FIX:Too many Particles when running over 30
+//	if(!CTimer::GetLogicalFramesPassed()) 
+//		return nil;
+//#endif // FIX_BUGS_MAYBE
 	
 
 	if ( ( type == PARTICLE_ENGINE_SMOKE
@@ -1127,7 +1127,6 @@ CParticle *CParticle::AddParticle(tParticleType type, CVector const &vecPos, CVe
 	
 	return pParticle;
 }
-
 void CParticle::Update()
 {
 	if ( CTimer::GetIsPaused() )
