@@ -329,6 +329,9 @@ void CWeather::Update(void)
 	}
 
 	if ((NewWeatherType == WEATHER_SUNNY || NewWeatherType == WEATHER_EXTRA_SUNNY) && !CGame::IsInInterior() && !CCutsceneMgr::IsRunning())
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		AddBeastie();
 }
 
