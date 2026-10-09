@@ -476,6 +476,9 @@ void CWeather::AddRain()
 		dir.x = 0.0f;
 		dir.y = CGeneral::GetRandomNumberInRange(30.0f, 40.0f);
 		dir.z = 0.0f;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_RAINDROP_2D, pos, dir, nil, CGeneral::GetRandomNumberInRange(0.1f, 0.75f), 0, 0, (int)Rain&3, 0);
 
 		pos.x = CGeneral::GetRandomNumberInRange(0, (int)SCREEN_WIDTH);
@@ -484,6 +487,9 @@ void CWeather::AddRain()
 		dir.x = 0.0f;
 		dir.y = CGeneral::GetRandomNumberInRange(30.0f, 40.0f);
 		dir.z = 0.0f;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_RAINDROP_2D, pos, dir, nil, CGeneral::GetRandomNumberInRange(0.1f, 0.75f), 0, 0, (int)Rain&3, 0);
 
 		pos.x = CGeneral::GetRandomNumberInRange(0, (int)SCREEN_WIDTH);
@@ -492,6 +498,9 @@ void CWeather::AddRain()
 		dir.x = 0.0f;
 		dir.y = CGeneral::GetRandomNumberInRange(30.0f, 40.0f);
 		dir.z = 0.0f;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_RAINDROP_2D, pos, dir, nil, CGeneral::GetRandomNumberInRange(0.1f, 0.75f), 0, 0, (int)Rain&3, 0);
 
 		float dist = CGeneral::GetRandomNumberInRange(0.0f, Max(10.0f*Rain, 40.0f)/2.0f);
@@ -512,6 +521,9 @@ void CWeather::AddRain()
 				CVector pos2 = pos;
 				pos2.x += CGeneral::GetRandomNumberInRange(-15.0f, 15.0f);
 				pos2.y += CGeneral::GetRandomNumberInRange(-15.0f, 15.0f);
+#ifdef FIX_BUGS_MAYBE
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				if(CGeneral::GetRandomNumber() & 1)
 					CParticle::AddParticle(PARTICLE_RAIN_SPLASH, pos2, CVector(0.0f, 0.0f, 0.0f), nil, 0.0f, colour);
 				else

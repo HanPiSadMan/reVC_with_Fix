@@ -4992,7 +4992,10 @@ CPed::PreRender(void)
 							splashPos.z += 0.7f * sphere->radius;
 							splashPos.x += CGeneral::GetRandomNumberInRange(-0.15f, 0.15f);
 							splashPos.y += CGeneral::GetRandomNumberInRange(-0.15f, 0.15f);
-							CParticle::AddParticle(PARTICLE_RAIN_SPLASHUP, splashPos, CVector(0.0f, 0.0f, 0.0f), nil, 0.0f, 0, 0, CGeneral::GetRandomNumber() & 1, 0);
+#ifdef FIX_BUGS_MAYBE
+						        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
+							CParticle::AddParticle(PARTICLE_RAIN_SPLASHUP, splashPos, CVector(255.0f, 0.0f, 0.0f), nil, 0.0f, 0, 0, CGeneral::GetRandomNumber() & 1, 0);
 							break;
 						default:
 							break;

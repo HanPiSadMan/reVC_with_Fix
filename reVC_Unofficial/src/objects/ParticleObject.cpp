@@ -874,11 +874,17 @@ void CParticleObject::UpdateClose(void)
 
 						if ( CGeneral::GetRandomNumber() & 1 )
 						{
+#ifdef FIX_BUGS_MAYBE
+						        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_RAIN_SPLASH,   splashpos, CVector(0.0f, 0.0f, 0.0f),
 								nil, 0.1f,  this->m_Color);
 						}
 						else
 						{
+#ifdef FIX_BUGS_MAYBE
+						        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_RAIN_SPLASHUP, splashpos, CVector(0.0f, 0.0f, 0.0f),
 								nil, 0.12f, this->m_Color);
 						}

@@ -1266,6 +1266,9 @@ void CParticle::Update()
 			
 			if ( psystem->m_Type == PARTICLE_FIREBALL )
 			{
+#ifdef FIX_BUGS_MAYBE
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				  AddParticle(PARTICLE_HEATHAZE, particle->m_vecPosition, CVector(0.0f, 0.0f, 0.0f),
 					nil, particle->m_fSize * 5.0f);
 			}
@@ -1280,6 +1283,9 @@ void CParticle::Update()
 					if ( FindPlayerPed()->GetWeapon()->m_eWeaponType == WEAPONTYPE_MINIGUN )
 #endif
 					{
+#ifdef FIX_BUGS_MAYBE
+						if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 						AddParticle(PARTICLE_HEATHAZE, particle->m_vecPosition, CVector(0.0f, 0.0f, 0.0f));
 					}
 				}
@@ -1361,6 +1367,9 @@ void CParticle::Update()
 					
 					vecWaterdropPos.z = 2.0f;
 
+#ifdef FIX_BUGS_MAYBE
+					if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 					if ( AddParticle(PARTICLE_WATERDROP,
 										vecWaterdropPos,
 										vecWaterdropTarget,
@@ -1497,6 +1506,9 @@ void CParticle::Update()
 									
 									if ( CGeneral::GetRandomNumber() & 1 )
 									{
+#ifdef FIX_BUGS_MAYBE
+								                if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 										AddParticle(PARTICLE_RAIN_SPLASH,
 													CVector
 													(
@@ -1508,6 +1520,9 @@ void CParticle::Update()
 									}
 									else
 									{
+#ifdef FIX_BUGS_MAYBE
+										if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 										AddParticle(PARTICLE_RAIN_SPLASHUP,
 													CVector
 													(
@@ -1532,6 +1547,9 @@ void CParticle::Update()
 									{
 										if ( (randVal % 5) == 0 )
 										{
+#ifdef FIX_BUGS_MAYBE
+											if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 											AddParticle(PARTICLE_RAIN_SPLASH,
 														CVector
 														(
@@ -1543,6 +1561,9 @@ void CParticle::Update()
 										}
 										else
 										{
+#ifdef FIX_BUGS_MAYBE
+											if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 											AddParticle(PARTICLE_RAIN_SPLASHUP,
 														CVector
 														(
@@ -1625,6 +1646,9 @@ void CParticle::Update()
 								{
 									bRemoveParticle = true;
 
+#ifdef FIX_BUGS_MAYBE
+							        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 									AddParticle(PARTICLE_GUNSHELL_BUMP1,
 												CVector
 												(
