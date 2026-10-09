@@ -680,8 +680,9 @@ CAutomobile::ProcessControl(void)
 				CParticle::AddParticle(PARTICLE_ENGINE_SMOKE,
 					m_aWheelColPoints[2].point + 0.5f*GetUp() - GetForward(),
 					1.2f*m_vecMoveSpeed, nil, 2.0f);
-				ApplyMoveForce(CVector(0.0f, 0.0f, 1.0f) * m_fMass * 0.4f);
-				ApplyTurnForce(GetUp() * m_fTurnMass * 0.01f, GetForward() * 1.0f);
+
+				ApplyMoveForce(CVector(0.0f, 0.0f, 1.0f)*m_fMass*0.4f);
+				ApplyTurnForce(GetUp()*m_fTurnMass*0.01f, GetForward()*1.0f);
 			}
 		}
 		break;
@@ -1560,9 +1561,7 @@ CAutomobile::ProcessControl(void)
 
 	if(m_fHealth < 250.0f && GetStatus() != STATUS_WRECKED){
 		// Car is on fire
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 		CParticle::AddParticle(PARTICLE_CARFLAME, damagePos,
 			CVector(0.0f, 0.0f, CGeneral::GetRandomNumberInRange(0.01125f, 0.09f)),
 			nil, 0.63f);
@@ -1571,19 +1570,14 @@ CAutomobile::ProcessControl(void)
 		coors.x += CGeneral::GetRandomNumberInRange(-0.5625f, 0.5625f),
 		coors.y += CGeneral::GetRandomNumberInRange(-0.5625f, 0.5625f),
 		coors.z += CGeneral::GetRandomNumberInRange(0.5625f, 2.25f);
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 		CParticle::AddParticle(PARTICLE_CARFLAME_SMOKE, coors, CVector(0.0f, 0.0f, 0.0f));
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 		CParticle::AddParticle(PARTICLE_ENGINE_SMOKE2, damagePos, CVector(0.0f, 0.0f, 0.0f), nil, 0.5f);
 
 		// Blow up car after 5 seconds
 		m_fFireBlowUpTimer += CTimer::GetTimeStepInMilliseconds();
-		//if(m_fFireBlowUpTimer > 5000.0f)
-		//	BlowUpCar(m_pSetOnFireEntity);
+		if(m_fFireBlowUpTimer > 5000.0f)
+			BlowUpCar(m_pSetOnFireEntity);
 	}else
 		m_fFireBlowUpTimer = 0.0f;
 
@@ -1782,9 +1776,6 @@ CAutomobile::PreRender(void)
 			case WHEEL_STATE_SPINNING:
 			case WHEEL_STATE_SKIDDING:
 			case WHEEL_STATE_FIXED:
-#ifdef FIX_BUGS_MAYBE
-				if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 				CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 					m_aWheelColPoints[i].point + CVector(0.0f, 0.0f, 0.05f),
 					CVector(0.0f, 0.0f, 0.0f), nil, 0.1f);
@@ -1835,22 +1826,15 @@ CAutomobile::PreRender(void)
 				switch(m_aWheelState[i]){
 				case WHEEL_STATE_SPINNING:
 					if(AddWheelDirtAndWater(&m_aWheelColPoints[i], drawParticles)){
-#ifdef FIX_BUGS_MAYBE
-						if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_BURNINGRUBBER_SMOKE,
 							m_aWheelColPoints[i].point + CVector(0.0f, 0.0f, 0.25f),
 							CVector(0.0f, 0.0f, 0.0f));
-#ifdef FIX_BUGS_MAYBE
-						if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 						CParticle::AddParticle(PARTICLE_BURNINGRUBBER_SMOKE,
 							m_aWheelColPoints[i].point + CVector(0.0f, 0.0f, 0.25f),
 							CVector(0.0f, 0.0f, 0.05f));
 					}
-#ifdef FIX_BUGS_MAYBE
-					if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 					CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 						m_aWheelColPoints[i].point + CVector(0.0f, 0.0f, 0.25f),
 						CVector(0.0f, 0.0f, 0.0f));
@@ -1867,9 +1851,7 @@ CAutomobile::PreRender(void)
 
 						if(Abs(fwdSpeed) > 5.0f){
 							AddWheelDirtAndWater(&m_aWheelColPoints[i], drawParticles);
-#ifdef FIX_BUGS_MAYBE
-							if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 							CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 								m_aWheelColPoints[i].point + CVector(0.0f, 0.0f, 0.25f),
 								CVector(0.0f, 0.0f, 0.0f));
@@ -1885,9 +1867,7 @@ CAutomobile::PreRender(void)
 				case WHEEL_STATE_FIXED:
 					if(Abs(fwdSpeed) > 5.0f){
 						AddWheelDirtAndWater(&m_aWheelColPoints[i], drawParticles);
-#ifdef FIX_BUGS_MAYBE
-						if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 						CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 							m_aWheelColPoints[i].point + CVector(0.0f, 0.0f, 0.25f),
 							CVector(0.0f, 0.0f, 0.0f));
@@ -1926,18 +1906,10 @@ CAutomobile::PreRender(void)
 							frictionSpeed += 0.05f*GetRight();
 						CVector unusedRight = 0.15f*GetRight();
 						CVector sparkDir = 0.25f*frictionSpeed;
-#ifdef FIX_BUGS_MAYBE
-						if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 						CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[i].point, sparkDir);
-#ifdef FIX_BUGS_MAYBE
-						if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
+
 						if(speedSq > 0.04f)
 							CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[i].point, sparkDir);
-#ifdef FIX_BUGS_MAYBE
-						if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 						if(speedSq > 0.16f){
 							CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[i].point, sparkDir);
 							CParticle::AddParticle(PARTICLE_SPARK_SMALL, m_aWheelColPoints[i].point, sparkDir);
@@ -1957,9 +1929,6 @@ CAutomobile::PreRender(void)
 		case WHEEL_STATE_SPINNING:
 		case WHEEL_STATE_SKIDDING:
 		case WHEEL_STATE_FIXED:
-#ifdef FIX_BUGS_MAYBE
-			if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 				m_aWheelColPoints[CARWHEEL_REAR_LEFT].point + CVector(0.0f, 0.0f, 0.25f) + offset,
 				CVector(0.0f, 0.0f, 0.0f));
@@ -1978,9 +1947,6 @@ CAutomobile::PreRender(void)
 		case WHEEL_STATE_SPINNING:
 		case WHEEL_STATE_SKIDDING:
 		case WHEEL_STATE_FIXED:
-#ifdef FIX_BUGS_MAYBE
-			if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_RUBBER_SMOKE,
 				m_aWheelColPoints[CARWHEEL_REAR_RIGHT].point + CVector(0.0f, 0.0f, 0.25f) + offset,
 				CVector(0.0f, 0.0f, 0.0f));
@@ -2014,9 +1980,6 @@ CAutomobile::PreRender(void)
 
 			n = 6.0f*CWeather::Rain;
 			for(j = 0; j <= n; j++)
-#ifdef FIX_BUGS_MAYBE
-				if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 				CParticle::AddParticle(PARTICLE_RAIN_SPLASHUP,
 					c + CVector(CGeneral::GetRandomNumberInRange(-0.4f, 0.4f), CGeneral::GetRandomNumberInRange(-0.4f, 0.4f), 0.0f),
 					CVector(0.0f, 0.0f, 0.0f),
@@ -2054,9 +2017,6 @@ CAutomobile::PreRender(void)
 			}
 
 			static float fumesLimit = 2.0f;
-#ifdef FIX_BUGS_MAYBE
-			if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 			if(CGeneral::GetRandomNumberInRange(1.0f, 3.0f)*(m_fGasPedal+1.1f) > fumesLimit)
 				for(i = 0; i < 4;){
 					CParticle::AddParticle(PARTICLE_EXHAUST_FUMES, pos1, dir1);
@@ -2646,9 +2606,6 @@ CAutomobile::PreRender(void)
 		   m_aWheelColPoints[CARWHEEL_REAR_RIGHT].surfaceB == SURFACE_WATER){
 			// hovering on water
 			mat.RotateY(-HALFPI);
-#ifdef FIX_BUGS_MAYBE
-			if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 			if((CTimer::GetFrameCounter()+CARWHEEL_REAR_RIGHT) & 1){
 				CParticle::AddParticle(PARTICLE_STEAM_NY_SLOWMOTION, m_aWheelColPoints[CARWHEEL_REAR_RIGHT].point,
 					0.5f*m_vecMoveSpeed+0.1f*GetRight(), nil, 0.4f, hoverParticleCol);
@@ -2690,9 +2647,6 @@ CAutomobile::PreRender(void)
 		   m_aWheelColPoints[CARWHEEL_REAR_LEFT].surfaceB == SURFACE_WATER){
 			// hovering on water
 			mat.RotateY(HALFPI);
-#ifdef FIX_BUGS_MAYBE
-			if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 			if((CTimer::GetFrameCounter()+CARWHEEL_REAR_LEFT) & 1){
 				CParticle::AddParticle(PARTICLE_STEAM_NY_SLOWMOTION, m_aWheelColPoints[CARWHEEL_REAR_LEFT].point,
 					0.5f*m_vecMoveSpeed-0.1f*GetRight(), nil, 0.4f, hoverParticleCol);
@@ -2894,9 +2848,6 @@ CAutomobile::PreRender(void)
 			   m_aWheelColPoints[CARWHEEL_FRONT_RIGHT].surfaceB == SURFACE_WATER){
 				// hovering on water
 				mat.RotateY(-HALFPI);
-#ifdef FIX_BUGS_MAYBE
-				if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 				if((CTimer::GetFrameCounter()+CARWHEEL_FRONT_RIGHT) & 1){
 					CParticle::AddParticle(PARTICLE_STEAM_NY_SLOWMOTION, m_aWheelColPoints[CARWHEEL_FRONT_RIGHT].point,
 						0.5f*m_vecMoveSpeed+0.1f*GetRight(), nil, 0.4f, hoverParticleCol);
@@ -2938,9 +2889,6 @@ CAutomobile::PreRender(void)
 			   m_aWheelColPoints[CARWHEEL_FRONT_LEFT].surfaceB == SURFACE_WATER){
 				// hovering on water
 				mat.RotateY(HALFPI);
-#ifdef FIX_BUGS_MAYBE
-				if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 				if((CTimer::GetFrameCounter()+CARWHEEL_FRONT_LEFT) & 1){
 					CParticle::AddParticle(PARTICLE_STEAM_NY_SLOWMOTION, m_aWheelColPoints[CARWHEEL_FRONT_LEFT].point,
 						0.5f*m_vecMoveSpeed-0.1f*GetRight(), nil, 0.4f, hoverParticleCol);
@@ -4543,9 +4491,6 @@ CAutomobile::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 	case SURFACE_GRASS:
 		dir.x = -0.05f*m_vecMoveSpeed.x;
 		dir.y = -0.05f*m_vecMoveSpeed.y;
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 4; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.03f, 0.06f);
 			CParticle::AddParticle(PARTICLE_WHEEL_DIRT, colpoint->point, dir, nil,
@@ -4555,9 +4500,6 @@ CAutomobile::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 	case SURFACE_GRAVEL:
 		dir.x = -0.05f*m_vecMoveSpeed.x;
 		dir.y = -0.05f*m_vecMoveSpeed.y;
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 4; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.03f, 0.06f);
 			CParticle::AddParticle(PARTICLE_WHEEL_DIRT, colpoint->point, dir, nil,
@@ -4567,9 +4509,6 @@ CAutomobile::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 	case SURFACE_MUD_DRY:
 		dir.x = -0.05f*m_vecMoveSpeed.x;
 		dir.y = -0.05f*m_vecMoveSpeed.y;
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 4; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.03f, 0.06f);
 			CParticle::AddParticle(PARTICLE_WHEEL_DIRT, colpoint->point, dir, nil,
@@ -4583,9 +4522,6 @@ CAutomobile::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 			return 0;
 		dir.x = 0.5f*m_vecMoveSpeed.x;
 		dir.y = 0.5f*m_vecMoveSpeed.y;
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 		for(i = 0; i < 1; i++){
 			dir.z = CGeneral::GetRandomNumberInRange(0.02f, 0.055f);
 			CParticle::AddParticle(PARTICLE_SAND, colpoint->point, dir, nil,
@@ -4593,9 +4529,6 @@ CAutomobile::AddWheelDirtAndWater(CColPoint *colpoint, uint32 belowEffectSpeed)
 		}
 		return 0;
 	default:
-#ifdef FIX_BUGS_MAYBE
-		if(CTimer::GetLogicalFramesPassed())
-#endif // FIX_BUGS_MAYBE
 		if(CWeather::WetRoads > 0.01f){
 			if(CTimer::GetFrameCounter() & 1)
 				CParticle::AddParticle(
