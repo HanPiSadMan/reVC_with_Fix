@@ -1975,7 +1975,9 @@ CWaterLevel::RenderWavyMask(float fX, float fY, float fZ,
 							);
 
 							vecPos -= 0.05f * TheCamera.GetForward();
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_WATER_SPARK,
 								vecPos,
 								CVector(0.0f, 0.0f, 0.0f),
@@ -1996,9 +1998,10 @@ CWaterLevel::RenderWavyMask(float fX, float fY, float fZ,
 								fY + maskMorphVerts[base+c].y,
 								fZ + maskMorphVerts[base+c].z + 0.12f
 							);
-
 							vecPos -= 0.05f * TheCamera.GetForward();
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_WATER_SPARK,
 								vecPos,
 								CVector(0.0f, 0.0f, 0.0f),
@@ -2019,9 +2022,10 @@ CWaterLevel::RenderWavyMask(float fX, float fY, float fZ,
 								fY + maskMorphVerts[base+b].y,
 								fZ + maskMorphVerts[base+b].z + 0.12f
 							);
-
 							vecPos -= 0.05f * TheCamera.GetForward();
-							
+#ifdef FIX_BUGS_MAYBE
+					        if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_WATER_SPARK,
 								vecPos,
 								CVector(0.0f, 0.0f, 0.0f),
@@ -2044,7 +2048,9 @@ CWaterLevel::RenderWavyMask(float fX, float fY, float fZ,
 							);
 
 							vecPos -= 0.05f * TheCamera.GetForward();
-							
+#ifdef FIX_BUGS_MAYBE
+							if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_WATER_SPARK,
 								vecPos,
 								CVector(0.0f, 0.0f, 0.0f),

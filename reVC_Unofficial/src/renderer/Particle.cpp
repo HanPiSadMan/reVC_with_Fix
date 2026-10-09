@@ -842,6 +842,9 @@ void CParticle::AddParticlesAlongLine(tParticleType type, CVector const &vecStar
 	for ( int32 i = 0; i < nSteps; i++ )
 	{
 		CVector vecPos = float(i) * vecStep + vecStart;
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		AddParticle(type, vecPos, vecDir, pEntity, fSize, nRotationSpeed, nRotation, nCurFrame, nLifeSpan);
 	}
 }
@@ -859,6 +862,9 @@ void CParticle::AddParticlesAlongLine(tParticleType type, CVector const &vecStar
 	{		
 		CVector vecPos = float(i) * vecStep + vecStart;
 		
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		AddParticle(type, vecPos, vecDir, pEntity, fSize, color, nRotationSpeed, nRotation, nCurFrame, nLifeSpan);
 	}
 }
@@ -1366,7 +1372,6 @@ void CParticle::Update()
 					}
 					
 					vecWaterdropPos.z = 2.0f;
-
 #ifdef FIX_BUGS_MAYBE
 					if(CTimer::GetLogicalFramesPassed())
 #endif // FIX_BUGS_MAYBE
@@ -1503,7 +1508,6 @@ void CParticle::Update()
 							case PARTICLE_RAINDROP_SMALL:
 								{
 									bRemoveParticle = true;
-									
 									if ( CGeneral::GetRandomNumber() & 1 )
 									{
 #ifdef FIX_BUGS_MAYBE
@@ -1645,7 +1649,6 @@ void CParticle::Update()
 							case PARTICLE_GUNSHELL:
 								{
 									bRemoveParticle = true;
-
 #ifdef FIX_BUGS_MAYBE
 							        if(CTimer::GetLogicalFramesPassed())
 #endif // FIX_BUGS_MAYBE
@@ -2505,7 +2508,6 @@ void CParticle::HandleShootableBirdsStuff(CEntity *entity, CVector const&camPos)
 				CStats::SeagullsKilled++;
 				
 				bRemoveParticle = true;
-
 				for ( int32 i = 0; i < 8; i++ )
 				{	
 					CParticle *pBirdDerbis = AddParticle(PARTICLE_BIRD_DEBRIS,

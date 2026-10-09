@@ -290,6 +290,9 @@ CBoat::ProcessControl(void)
 
 		// On fire
 		if(m_fHealth < 250.0f){
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_CARFLAME, smokePos,
 				CVector(0.0f, 0.0f, CGeneral::GetRandomNumberInRange(2.25f/200.0f, 0.09f)),
 				nil, 0.9f);
@@ -297,15 +300,23 @@ CBoat::ProcessControl(void)
 			smokePos2.x += CGeneral::GetRandomNumberInRange(-2.25f/4.0f, 2.25f/4.0f);
 			smokePos2.y += CGeneral::GetRandomNumberInRange(-2.25f/4.0f, 2.25f/4.0f);
 			smokePos2.z += CGeneral::GetRandomNumberInRange(2.25f/4.0f, 2.25f);
+#ifdef FIX_BUGS_MAYBE
+			if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 			CParticle::AddParticle(PARTICLE_ENGINE_SMOKE2, smokePos2, CVector(0.0f, 0.0f, 0.0f));
 
 			m_fDamage += CTimer::GetTimeStepInMilliseconds();
 			if(m_fDamage > 5000.0f)
 				BlowUpCar(m_pSetOnFireEntity);
 		}
-
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		if(speedSq < 0.25f && (CTimer::GetFrameCounter() + m_randomSeed) & 1)
 			CParticle::AddParticle(PARTICLE_ENGINE_STEAM, smokePos, smokeDir);
+#ifdef FIX_BUGS_MAYBE
+		if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 		if(speedSq < 0.25f && m_fHealth <= 390.0f)
 			CParticle::AddParticle(PARTICLE_ENGINE_SMOKE, smokePos, 1.25f*smokeDir);
 	}
@@ -448,11 +459,15 @@ CBoat::ProcessControl(void)
 							jetDir.x *= 3.5f;
 							jetDir.y *= 3.5f;
 							propellerWorld.z += 0.5f;
-							
+#ifdef FIX_BUGS_MAYBE
+							if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_BOAT_SPLASH, propellerWorld, jetDir, nil, 1.25f, jetColor,
 								CGeneral::GetRandomNumberInRange(0, 5),
 								CGeneral::GetRandomNumberInRange(0, 90), 1, 500);
-							
+#ifdef FIX_BUGS_MAYBE
+							if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 							CParticle::AddParticle(PARTICLE_CAR_SPLASH, propellerWorld, 0.75f * jetDir, nil, 0.5f, splashColor,
 								CGeneral::GetRandomNumberInRange(0, 30),
 								CGeneral::GetRandomNumberInRange(0, 45), 3, 500);
@@ -615,9 +630,15 @@ CBoat::ProcessControl(void)
 			if(splashPos.z-waterLevel < 3.0f &&
 			   CVisibilityPlugins::GetDistanceSquaredFromCamera(&splashPos) < SQR(70.0f * TheCamera.GenerationDistMultiplier)){
 				splashPos.z = waterLevel + 0.1f;
+#ifdef FIX_BUGS_MAYBE
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				CParticle::AddParticle(PARTICLE_CAR_SPLASH, splashPos, 0.75f*splashDir, nil, splashSize+0.1f,  splashColor,
 					CGeneral::GetRandomNumberInRange(0.0f, 10.0f), CGeneral::GetRandomNumberInRange(0.0f, 90.0f),
 					1, lifeBase + splashDir.z*lifeMult);
+#ifdef FIX_BUGS_MAYBE
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				CParticle::AddParticle(PARTICLE_BOAT_SPLASH, splashPos, splashDir, nil, splashSize,  jetColor,
 					CGeneral::GetRandomNumberInRange(0.0f, 0.4f), CGeneral::GetRandomNumberInRange(0.0f, 45.0f),
 					0, lifeBase + splashDir.z*lifeMult);
@@ -672,9 +693,15 @@ CBoat::ProcessControl(void)
 			if(splashPos.z-waterLevel < 3.0f &&
 			   CVisibilityPlugins::GetDistanceSquaredFromCamera(&splashPos) < SQR(70.0f * TheCamera.GenerationDistMultiplier)){
 				splashPos.z = waterLevel + 0.1f;
+#ifdef FIX_BUGS_MAYBE
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				CParticle::AddParticle(PARTICLE_CAR_SPLASH, splashPos, 0.75f*splashDir, nil, splashSize+0.1f,  splashColor,
 					CGeneral::GetRandomNumberInRange(0.0f, 10.0f), CGeneral::GetRandomNumberInRange(0.0f, 90.0f),
 					1, lifeBase + splashDir.z*lifeMult);
+#ifdef FIX_BUGS_MAYBE
+				if(CTimer::GetLogicalFramesPassed())
+#endif // FIX_BUGS_MAYBE
 				CParticle::AddParticle(PARTICLE_BOAT_SPLASH, splashPos, splashDir, nil, splashSize,  jetColor,
 					CGeneral::GetRandomNumberInRange(0.0f, 0.4f), CGeneral::GetRandomNumberInRange(0.0f, 45.0f),
 					0, lifeBase + splashDir.z*lifeMult);
@@ -798,7 +825,12 @@ CBoat::ApplyWaterResistance(void)
 	if(GetModelIndex() == MI_SKIMMER)
 		resistance *= fSeaPlaneWaterResistance;
 	float fwdSpeed = DotProduct(GetMoveSpeed(), GetForward());
+#ifdef FIX_BUGS_MAYBE
+	//FIX:WaterResistance Become bigger when running over 30fps(Testing.)
+	float magic = (SQR(fwdSpeed * CTimer::GetTimeStepFix()) + 0.05f) * resistance + 1.0f;
+#else // FIX_BUGS_MAYBE
 	float magic = (SQR(fwdSpeed) + 0.05f) * resistance + 1.0f;
+#endif
 	magic = Abs(magic);
 	float fx = Pow(pBoatHandling->vecMoveRes.x/magic, 0.5f*CTimer::GetTimeStep());
 	float fy = Pow(pBoatHandling->vecMoveRes.y/magic, 0.5f*CTimer::GetTimeStep());
