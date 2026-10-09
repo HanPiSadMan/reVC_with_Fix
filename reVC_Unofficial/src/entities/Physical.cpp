@@ -575,7 +575,9 @@ CPhysical::ApplyAirResistance(void)
 #ifdef FIX_BUGS_MAYBE
 		//FIX:Vehicle's TurnSpeed getting lower because of running over 30 fps.
 		//Not accuracy,looking for better solution
-		m_vecTurnSpeed *= Pow(0.998,CTimer::GetTimeStepFix());
+		m_vecTurnSpeed.x *= 0.99;
+		m_vecTurnSpeed.y *= 0.99;
+		m_vecTurnSpeed.z *= Pow(0.996,CTimer::GetTimeStepFix()) * 0.999995;
 #else // FIX_BUGS_MAYBE
 		m_vecTurnSpeed *= 0.99;
 #endif
