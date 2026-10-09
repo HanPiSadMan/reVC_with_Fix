@@ -6,7 +6,8 @@ All of these fixes are experimental; they may not achieve exactly the same effec
 Due to my limited personal ability, I can only attempt to solve basic and obvious problems, and not all issues can be resolved.
 ## What I Fixed?
 Player to Object's collision force(TODO:Improve this.).\
-Vehicle's turnSpeed(Testing Method).\
+Automobile's AirResisteanceForce(Testing).\
+Boat's WaterResistanceForce(Testing)
 Chainsaw to NPC's push force\
 Missile's flying speed.\
 Several particle's animation(Need Improve).\
