@@ -7,7 +7,7 @@ Due to my limited personal ability, I can only attempt to solve basic and obviou
 ## What I Fixed?
 Player to Object's collision force(TODO:Improve this.).\
 Automobile's AirResisteanceForce(Testing).\
-Boat's WaterResistanceForce(Testing)
+Boat's WaterResistanceForce(Testing)\
 Chainsaw to NPC's push force\
 Missile's flying speed.\
 Several particle's animation(Need Improve).\
